@@ -25,7 +25,7 @@ ggplot(mpg, aes(x = displ, y = hwy, color = class)) +
 ggplot(mpg, aes(x = displ, y = hwy)) +
   geom_point(aes(color = class))
 
-ggplot(mpg, aes(displ)) +
+ggplot(mpg, aes(x = displ)) +
   geom_point(aes(y = hwy, color = class))
 
 ggplot(mpg) +
@@ -36,21 +36,22 @@ ggplot(mpg) +
 #-----------------------------------------------------------
 
 # 1 - mtcars데이터를 사용해서 mpg는 x축에, cyl은 y축에 맵핑해보세요
-ggplot(___, aes(___, ___)) +
+ggplot(mtcars, aes(x = mpg, y = cyl)) +
   geom_point()
 
 # 2 - 반대로 cyl은 x축에, mpg는 y축에 맵핑하고 비교해보세요
-ggplot(___, aes(___, ___)) +
+ggplot(mtcars, aes(x = cyl, y = mpg)) +
   geom_point()
 
 # 3 - wt는 x축에, mpg는 y축에 cyl은 color에 맵핑해보세요
-ggplot(___, aes(___, ___, ___)) +
+ggplot(mtcars, aes(x = wt, y = mpg, color = cyl)) +
   geom_point()
 
 # 4 - 3번 차트에 연결해서 덧붙여 shape는 1번, size는 4로 변경해보세요 
-ggplot(mtcars, aes(___, ___, ___)) +
-  geom_point(___, ___)
+ggplot(mtcars, aes(x = wt, y = mpg, color = as.character(cyl))) +
+  geom_point(shape = 1, size = 4)
 
+unique(mtcars$cyl)
 
 #-----------------------------------------------------------
 # Aesthetics 실습(2) 
@@ -61,17 +62,17 @@ ggplot(mtcars, aes(x = wt, y = mpg, col = cyl)) +
   geom_point(shape = 1, size = 4)
 
 # 1 - color 대신 fill = cyl을 넣어보세요
-ggplot(mtcars, aes(x = wt, y = mpg, ___ = cyl)) +
+ggplot(mtcars, aes(x = wt, y = mpg, fill = cyl)) +
   geom_point(shape = 1, size = 4)
 
 
 # 2 - 1번 차트에서 shape=21, size=4, alpha=0.6으로 속성을 바꿔보세요
 ggplot(mtcars, aes(x = wt, y = mpg, fill = cyl)) +
-  geom_point(___ = ___, ___ = ___, ___ = ___)
+  geom_point(shape = 21, size = 4, alpha = 0.6)
 
 
 # 3 - 2번 차트에 col = am을 추가해보세요
-ggplot(mtcars, aes(x = wt, y = mpg, ___ = ___, fill= cyl)) +
+ggplot(mtcars, aes(x = wt, y = mpg, color = am, fill= cyl)) +
   geom_point(shape = 21, size=4, alpha = 0.6)
 
 #-----------------------------------------------------------
@@ -101,6 +102,23 @@ ggplot(mtcars, aes(x=wt, y=mpg, label=cyl)) + geom_point() +
 # 본인이 원하는 차트를 만들어보세요. (정답은 없음)
 #-----------------------------------------------------------
 df_attr <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vSy_N5G_XSdrGJJSQnViIoRBz-iECV2_APIFPxH9GZV9A79Ar0Yol3s2b8yQluM188hz6tiCYXiJUNP/pub?gid=175829479&single=true&output=csv")
+
+glimpse(df_attr)
+df_attr <- df_attr %>% 
+  group_by(location) %>% 
+  summarise(means = mean(nurse_service, na.rm = T)) %>% 
+  ungroup()
+
+ggplot(df_attr, aes(x = location, y = means)) +
+  geom_col() +
+  theme_minimal(base_family = "AppleGothic") +
+  geom_label(aes(label = location, family = "AppleGothic"))
+
+ggplot(df_attr, aes(x = location, y = means)) +
+  geom_col() +
+  geom_label(aes(label = location, family = "NanumSquare")) +
+  theme_base(base_family = "NanumSquare")
+
 
 #-----------------------------------------------------------
 # Aesthetics 실습(5) : your turn
